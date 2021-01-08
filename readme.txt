@@ -1,0 +1,1 @@
+This is just a simple and basic example of datagram sockets transaction between server side and client side sockets.
