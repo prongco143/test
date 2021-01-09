@@ -1,48 +1,45 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Net.Sockets;
 using System.IO;
 
-namespace ClientSide
+namespace ServerSide
 {
-    public partial class Form1 : Form
+    class Program
     {
-        TcpClient client = null;
-        public Form1()
+        static void Main(string[] args)
         {
-            InitializeComponent();
-            client = new TcpClient("127.0.0.1", 8888);
-            NetworkStream ns = client.GetStream();
-            StreamReader sr = new StreamReader(ns);
+            TcpListener server = new TcpListener(8888);
+            server.Start();
+            Console.WriteLine("Server Started and waiting for clients.");
+            Socket socketForClients = server.AcceptSocket();
 
-            textBox1.Text = "Server >> " + sr.ReadLine();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (textBox2.Text != "")
+            if (socketForClients.Connected)
             {
-                NetworkStream ns = client.GetStream();
+                Console.WriteLine("Connected...");
+                Console.WriteLine("*********************************");
+                NetworkStream ns = new NetworkStream(socketForClients);
                 StreamWriter sw = new StreamWriter(ns);
-                sw.WriteLine(textBox2.Text);
+                StreamReader sr = new StreamReader(ns);
 
+
+                Console.Write("Server >> ");
+                string s = Console.ReadLine();
+                sw.WriteLine(s);
                 sw.Flush();
+                Console.WriteLine("Client >> " + sr.ReadLine());
+                Console.WriteLine("*********************************");
+                Console.WriteLine("\n Hit ENTER to close");
+                Console.ReadLine();
 
                 sw.Close();
                 ns.Close();
             }
+
+            socketForClients.Close();
         }
     }
 }
