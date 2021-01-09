@@ -19,16 +19,22 @@ namespace ServerSide
 
             if (socketForClients.Connected)
             {
+                Console.WriteLine("Connected...");
+                Console.WriteLine("*********************************");
                 NetworkStream ns = new NetworkStream(socketForClients);
                 StreamWriter sw = new StreamWriter(ns);
-                Console.WriteLine("Server >> Welcome Client.");
-                sw.WriteLine("Welcome Client");
-                sw.Flush();
-
                 StreamReader sr = new StreamReader(ns);
+
+
+                Console.Write("Server >> ");
+                string s = Console.ReadLine();
+                sw.WriteLine(s);
+                sw.Flush();
                 Console.WriteLine("Client >> " + sr.ReadLine());
-                Console.WriteLine("Press enter key to continue...");
+                Console.WriteLine("*********************************");
+                Console.WriteLine("\n Hit ENTER to close");
                 Console.ReadLine();
+
                 sw.Close();
                 ns.Close();
             }
