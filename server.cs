@@ -36,7 +36,7 @@ namespace ServerSide
                 Console.ReadLine();
 
                 sw.Close();
-                ns.Close();
+                ns.Close();s
             }
 
             socketForClients.Close();
