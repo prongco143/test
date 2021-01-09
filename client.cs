@@ -22,27 +22,23 @@ namespace ClientSide
             NetworkStream ns = client.GetStream();
             StreamReader sr = new StreamReader(ns);
 
-            textBox1.Text = "Server >> " + sr.ReadLine();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+            serverMsg.Text = "Server >> " + sr.ReadLine();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox2.Text != "")
+            if (clientMsg.Text != "")
             {
                 NetworkStream ns = client.GetStream();
                 StreamWriter sw = new StreamWriter(ns);
-                sw.WriteLine(textBox2.Text);
+                sw.WriteLine(clientMsg.Text);
 
                 sw.Flush();
 
                 sw.Close();
                 ns.Close();
             }
+            clientMsg.Text = "";
         }
     }
 }
